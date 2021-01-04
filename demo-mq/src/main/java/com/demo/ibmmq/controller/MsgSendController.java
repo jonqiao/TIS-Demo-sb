@@ -1,8 +1,10 @@
 package com.demo.ibmmq.controller;
 
+import com.sun.corba.se.impl.presentation.rmi.DynamicMethodMarshallerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 
@@ -36,6 +39,14 @@ public class MsgSendController {
   // http://localhost:8080/mqsend
   @GetMapping
   public String listUploadedFiles() throws IOException {
+    System.out.println("demo.file.in: " + inFile);
+    ClassPathResource classPathResource = new ClassPathResource(inFile);
+    InputStream is = classPathResource.getInputStream();
+    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+    while (reader.ready()) {
+     String line =  reader.readLine();
+     System.out.println(line);
+    }
     return "uploadForm";
   }
 

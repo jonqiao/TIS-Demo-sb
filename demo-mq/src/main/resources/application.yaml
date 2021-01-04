@@ -30,20 +30,20 @@ ibm:
     connName: localhost(1414)
     user: admin
     password: passw0rd
-    # ccdtUrl: "file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmqccdt\\AMQCLCHL.TAB"
+    # ccdtUrl: file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmqccdt\\AMQCLCHL.TAB
     # sslCipherSpec:     # Cipher Spec, sets connectionFactory property WMQConstants.WMQ_SSL_CIPHER_SPEC
 #    additional-properties:
 
 
 demo:
   storage:
-    location: "D:\\WORKSPACE\\FIL_WORKSPACE\\upload-dir"
+    location: D:\\WORKSPACE\\FIL_WORKSPACE\\upload
   queue:
     in: DEV.QUEUE.3
     out: DEV.QUEUE.3
   file:
-    in: "D:\\WORKSPACE\\FIL_WORKSPACE\\msg.in"
-    out: "D:\\WORKSPACE\\FIL_WORKSPACE\\msg.out"
+    in: D:\\WORKSPACE\\FIL_WORKSPACE\\msg.in
+    out: D:\\WORKSPACE\\FIL_WORKSPACE\\msg.out
 logging:
   file:
-    name: demo-mq/logs/DemoMQ.log
+    name: D:\\WORKSPACE\\FIL_WORKSPACE\\logs\\DemoMQ.log

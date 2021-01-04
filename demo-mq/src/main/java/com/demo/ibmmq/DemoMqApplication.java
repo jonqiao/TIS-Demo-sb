@@ -5,16 +5,37 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 
-// https://www.ibm.com/support/knowledgecenter/zh/SSFKSJ_9.1.0/com.ibm.mq.dev.doc/q031500_.htm
-// https://developer.ibm.com/languages/spring/tutorials/mq-jms-application-development-with-spring-boot/
-// https://developer.ibm.com/zh/tutorials/mq-jms-application-development-with-spring-boot/
-// https://github.com/ibm-messaging/mq-jms-spring
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 
 @SpringBootApplication
 public class DemoMqApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+
+		// Path amqclchlFilePath = Paths.get("./AMQCLCHL.TAB");
+		// Files.deleteIfExists(amqclchlFilePath);
+		// try (InputStream stream = new ClassPathResource("/AMQCLCHL.TAB").getInputStream()) {
+		// 	Files.copy(stream, amqclchlFilePath, StandardCopyOption.REPLACE_EXISTING);
+		// }
+		//
+		// Path trustStoreFilePath = Paths.get("./truststore.jks");
+		// Files.deleteIfExists(trustStoreFilePath);
+		// try (InputStream stream = new ClassPathResource("/truststore.jks").getInputStream()) {
+		// 	Files.copy(stream, trustStoreFilePath, StandardCopyOption.REPLACE_EXISTING);
+		// }
+		//
+		// System.setProperty("com.ibm.mq.cfg.useIBMCipherMappings", "false");
+		// System.setProperty("javax.net.ssl.trustStore", trustStoreFilePath.toString());
+		// System.setProperty("javax.net.ssl.trustStorePassword", "passw0rd");
+
 		SpringApplication.run(DemoMqApplication.class, args);
 	}
 
