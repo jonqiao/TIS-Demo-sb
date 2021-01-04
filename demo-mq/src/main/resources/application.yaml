@@ -1,0 +1,49 @@
+# You may want to use the default Spring Caching connection factory with the default Spring JMS properties.
+# This is now the preferred method in Spring for holding JMS objects open, rather than the Pooling options.
+spring:
+  main:
+    banner-mode: LOG
+#  servlet:
+#    multipart:
+#      max-file-size: 128KB
+#      max-request-size: 128KB
+  jms:
+    listener:
+      receive-timeout: 30000 # resets the initial timeout value to 30 seconds which has been shown to be more cost-effective.
+      concurrency: 1
+      max-concurrency: 5
+    template:
+      default-destination: DEV.QUEUE.1
+      receive-timeout: 30000
+    cache:
+      enabled: true
+      consumers: true
+      producers: true
+      session-cache-size: 1
+
+ibm:
+  mq:
+    clientId: DemoMQ20201115
+    applicationName: DemoMQ
+    queueManager: QM1
+    channel: DEV.ADMIN.SVRCONN
+    connName: localhost(1414)
+    user: admin
+    password: passw0rd
+    # ccdtUrl: "file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmqccdt\\AMQCLCHL.TAB"
+    # sslCipherSpec:     # Cipher Spec, sets connectionFactory property WMQConstants.WMQ_SSL_CIPHER_SPEC
+#    additional-properties:
+
+
+demo:
+  storage:
+    location: "D:\\WORKSPACE\\FIL_WORKSPACE\\upload-dir"
+  queue:
+    in: DEV.QUEUE.3
+    out: DEV.QUEUE.3
+  file:
+    in: "D:\\WORKSPACE\\FIL_WORKSPACE\\msg.in"
+    out: "D:\\WORKSPACE\\FIL_WORKSPACE\\msg.out"
+logging:
+  file:
+    name: demo-mq/logs/DemoMQ.log
