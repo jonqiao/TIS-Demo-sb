@@ -11,10 +11,10 @@
     <!-- Tab panes -->
     <ul class="nav nav-tabs bg-secondary" id="myTab" role="tablist" aria-orientation="vertical">
       <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="default-tab" data-toggle="tab" href="#default" role="tab" aria-controls="default" aria-selected="true">Default</a>
+        <a class="nav-link" th:classappend="${defaultActive == 'active'} ? 'active' : ''" id="default-tab" data-toggle="tab" href="#default" role="tab" aria-controls="default" aria-selected="true">Default</a>
       </li>
       <li class="nav-item" role="presentation">
-        <a class="nav-link" id="custom-tab" data-toggle="tab" href="#custom" role="tab" aria-controls="custom" aria-selected="false">Custom</a>
+        <a class="nav-link" th:classappend="${customActive == 'active'} ? 'active' : ''" id="custom-tab" data-toggle="tab" href="#custom" role="tab" aria-controls="custom" aria-selected="false">Custom</a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="others-tab" data-toggle="tab" href="#others" role="tab" aria-controls="others" aria-selected="false">Others</a>
@@ -24,7 +24,7 @@
       </li>
     </ul>
     <div class="tab-content" style="background-image:url('/image00.jfif');">
-      <div class="tab-pane active" id="default" role="tabpanel" aria-labelledby="default-tab">
+      <div class="tab-pane" th:classappend="${defaultActive == 'active'} ? 'active' : ''" id="default" role="tabpanel" aria-labelledby="default-tab">
         <br><br>
         <form class="was-validated" role="form" method="POST" th:action="@{/highvolume}">
           <div class="mb-3">
@@ -37,7 +37,7 @@
                 <button class="btn btn-outline-light" type="reset">&nbsp;Reset &nbsp; </button>
               </div>
             </div>
-            <div class="input-group">
+            <div class="input-group is-invalid">
               <div class="input-group-prepend">
                 <label class="input-group-text" for="groupSelectDefault">Number &nbsp;</label>
               </div>
@@ -51,12 +51,14 @@
                 <button class="btn btn-outline-light" type="submit">Submit</button>
               </div>
             </div>
-            <div class="invalid-feedback">Invalid, please chooose one...</div>
+            <div class="invalid-feedback">
+              <H5 th:text="${message1}"></H5>
+            </div>
           </div>
         </form>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       </div>
-      <div class="tab-pane" id="custom" role="tabpanel" aria-labelledby="custom-tab">
+      <div class="tab-pane" th:classappend="${customActive == 'active'} ? 'active' : ''" id="custom" role="tabpanel" aria-labelledby="custom-tab">
         <br><br>
         <form class="was-validated" role="form" method="POST" th:action="@{/highvolume}">
           <div class="mb-3">
@@ -73,7 +75,7 @@
                 <button class="btn btn-outline-light" type="reset">&nbsp;Reset &nbsp; </button>
               </div>
             </div>
-            <div class="input-group">
+            <div class="input-group is-invalid">
               <div class="input-group-prepend">
                 <span class="input-group-text" for="groupInputCustom">Number &nbsp;</span>
               </div>
@@ -82,7 +84,9 @@
                 <button class="btn btn-outline-light" type="submit">Submit</button>
               </div>
             </div>
-            <div class="invalid-feedback">Invalid, please input a number...</div>
+            <div class="invalid-feedback">
+              <H5 th:text="${message2}"></H5>
+            </div>
           </div>
         </form>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

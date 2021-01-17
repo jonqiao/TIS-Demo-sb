@@ -1,5 +1,6 @@
 package com.demo.ibmmq.controller;
 
+import com.ibm.mq.MQException;
 import com.sun.corba.se.impl.presentation.rmi.DynamicMethodMarshallerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Controller
@@ -53,7 +55,7 @@ public class MsgSendController {
 
   // http://localhost:8080/upload/file
   @PostMapping("/mqupload/file")
-  public String handleFileUpload(@RequestParam(value="file",required = false) MultipartFile file, Model model) throws IOException {
+  public String handleFileUpload(@RequestParam(value="file",required = false) MultipartFile file, Model model) throws IOException, InterruptedException {
     if (file == null || file.isEmpty()) {
       System.out.println("No uploadFile, use defaultFile instead...");
       ClassPathResource classPathResource = new ClassPathResource(defaultFile);
@@ -62,7 +64,12 @@ public class MsgSendController {
       while (reader.ready()) {
         String line =  reader.readLine();
         System.out.println("defaultFile: " + line);
-        jmsTemplate.convertAndSend(defaultDest, line);
+        try {
+          jmsTemplate.convertAndSend(defaultDest, line);
+        } catch (JmsException ex) {
+          ex.printStackTrace();
+          TimeUnit.SECONDS.sleep(30);
+        }
       }
       model.addAttribute("message1", "You successfully send default msg to MQ!");
     } else {
@@ -70,7 +77,12 @@ public class MsgSendController {
       while(reader.ready()) {
         String line = reader.readLine();
         System.out.println("uploadFile: " + line);
-        jmsTemplate.convertAndSend(inQueue, line);
+        try {
+          jmsTemplate.convertAndSend(inQueue, line);
+        } catch (JmsException ex) {
+          ex.printStackTrace();
+          TimeUnit.SECONDS.sleep(30);
+        }
       }
       model.addAttribute("message2", "You successfully send msg to MQ with " + file.getOriginalFilename() + "!");
     }
@@ -110,6 +122,7 @@ public class MsgSendController {
   // http://localhost:8080/highvolume
   @GetMapping("/highvolume")
   public String highvolumeIndex(Model model) {
+    model.addAttribute("defaultActive", "active");
     return "highVolume";
   }
 
@@ -117,16 +130,35 @@ public class MsgSendController {
   @PostMapping("/highvolume")
   public String highvolumeSubmit(@RequestParam("reqNum") int reqNum,
                                  @RequestParam(value = "reqQueue", required = false) String reqQueue,
-                                 Model model) {
+                                 Model model) throws InterruptedException {
     System.out.println("Custom request count: " + reqNum);
     System.out.println("Custom request queue: " + reqQueue);
     if (reqQueue == null) {
       reqQueue = defaultDest;
+      model.addAttribute("defaultActive", "active");
+      model.addAttribute("customActive", "");
+      model.addAttribute("message1", "You successfully send high volume messages to default Q !");
+    } else {
+      model.addAttribute("defaultActive", "");
+      model.addAttribute("customActive", "active");
+      model.addAttribute("message2", "You successfully send high volume messages to Q " + reqQueue + " !");
     }
     for (int i=0; i<reqNum; i++) {
-      jmsTemplate.convertAndSend(reqQueue, "Test message with index " + i);
+      try {
+        jmsTemplate.convertAndSend(reqQueue, "Total " + reqNum + " test message with index " + i);
+      } catch (JmsException ex) {
+        // Exception linkedEx = ex.getLinkedException();
+        // if (ex.getLinkedException() != null) {
+        //   if (linkedEx instanceof MQException) {
+        //     MQException mqException = (MQException) linkedEx;
+        //     int reasonCode = mqException.reasonCode;
+        //     // Handle the reason code accordingly
+        //   }
+        // }
+        ex.printStackTrace();
+        TimeUnit.SECONDS.sleep(30);
+      }
     }
-    model.addAttribute("message", "You successfully send default msg to MQ!");
     return "highVolume";
   }
 

@@ -13,7 +13,6 @@ import org.springframework.util.ErrorHandler;
 
 @Slf4j
 @Configuration
-@EnableJms
 public class myJmsConfig {
 
   @Autowired

@@ -1,13 +1,16 @@
 package com.demo.ibmmq.controller;
 
+import com.ibm.msg.client.jms.JmsQueue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.JmsException;
+import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jms.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,6 +21,9 @@ import java.util.Optional;
 @Slf4j
 @Controller
 public class MsgRecvController {
+
+  @Autowired
+  CachingConnectionFactory cachingConnectionFactory;
 
   @Value("${demo.queue.out}") // DEV.QUEUE.3
   String outQueue;
@@ -30,7 +36,7 @@ public class MsgRecvController {
 
   // http://localhost:8080/upload
   @GetMapping("/monitor")
-  public String monitorIndex() {
+  public String monitorIndex() throws JMSException {
     return "monitor";
   }
 
