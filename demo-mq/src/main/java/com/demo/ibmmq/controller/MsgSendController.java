@@ -37,7 +37,7 @@ public class MsgSendController {
 
   // http://localhost:8080/
   @GetMapping
-  public String index() throws IOException {
+  public String index() {
     // List<String> lines = Files.readAllLines(Paths.get(defaultFile), StandardCharsets.UTF_8);
     // for (String line : lines) {
     //   System.out.println(line);
@@ -47,7 +47,7 @@ public class MsgSendController {
 
   // http://localhost:8080/upload
   @GetMapping("/mqupload")
-  public String fileUpload() throws IOException {
+  public String fileUpload() {
     return "uploadForm";
   }
 
@@ -109,7 +109,7 @@ public class MsgSendController {
 
   // http://localhost:8080/highvolume
   @GetMapping("/highvolume")
-  public String highvolumeIndex(Model model) throws IOException {
+  public String highvolumeIndex(Model model) {
     return "highVolume";
   }
 
@@ -117,14 +117,13 @@ public class MsgSendController {
   @PostMapping("/highvolume")
   public String highvolumeSubmit(@RequestParam("reqNum") int reqNum,
                                  @RequestParam(value = "reqQueue", required = false) String reqQueue,
-                                 Model model) throws IOException {
+                                 Model model) {
     System.out.println("Custom request count: " + reqNum);
     System.out.println("Custom request queue: " + reqQueue);
     if (reqQueue == null) {
       reqQueue = defaultDest;
     }
-    for (int i=1; i <= reqNum; i++) {
-
+    for (int i=0; i<reqNum; i++) {
       jmsTemplate.convertAndSend(reqQueue, "Test message with index " + i);
     }
     model.addAttribute("message", "You successfully send default msg to MQ!");

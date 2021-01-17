@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/head :: commonhead('Monitor')"></head>
+
+<body>
+	<nav th:replace="common/head :: commonnav"></nav>
+
+	<main role="main" class="container-fluid">
+		<div class="card-deck">
+			<div class="card border-secondary">
+				<img src="/image10.jfif" class="card-img-top" alt="...">
+				<div class="card-body text-secondary">
+					<h5 class="card-title">DEV.QUEUE.1</h5>
+					<p class="card-text">Queue Depth...</p>
+				</div>
+				<div class="card-footer">
+					<small class="text-muted">Last updated 1 mins ago</small>
+				</div>
+			</div>
+			<div class="card border-secondary">
+				<img src="/image20.jfif" class="card-img-top" alt="...">
+				<div class="card-body text-secondary">
+					<h5 class="card-title">DEV.QUEUE.2</h5>
+					<p class="card-text">Queue Depth...</p>
+				</div>
+				<div class="card-footer">
+					<small class="text-muted">Last updated 1 mins ago</small>
+				</div>
+			</div>
+			<div class="card border-secondary">
+				<img src="/image30.jfif" class="card-img-top" alt="...">
+				<div class="card-body text-secondary">
+					<h5 class="card-title">DEV.QUEUE.3</h5>
+					<p class="card-text">Queue Depth...</p>
+				</div>
+				<div class="card-footer">
+					<small class="text-muted">Last updated 1 mins ago</small>
+				</div>
+			</div>
+		</div>
+	</main><!-- /.container -->
+
+	<th:block th:replace="common/head :: commonjs"></th:block>
+</body>
+
+</html>

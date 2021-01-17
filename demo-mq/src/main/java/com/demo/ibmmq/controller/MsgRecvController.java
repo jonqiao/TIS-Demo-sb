@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,8 +16,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
-@RestController
-@RequestMapping("mqrecv")
+@Controller
 public class MsgRecvController {
 
   @Value("${demo.queue.out}") // DEV.QUEUE.3
@@ -31,8 +28,15 @@ public class MsgRecvController {
   @Autowired
   private JmsTemplate jmsTemplate;
 
+  // http://localhost:8080/upload
+  @GetMapping("/monitor")
+  public String monitorIndex() {
+    return "monitor";
+  }
+
   // http://localhost:8080/mqrecv/queue
-  @GetMapping("/queue")
+  @GetMapping("/mqrecv/queue")
+  @ResponseBody
   String recvDefault(){
     // jmsTemplate.setReceiveTimeout(JmsTemplate.RECEIVE_TIMEOUT_NO_WAIT);
     try{
@@ -47,7 +51,8 @@ public class MsgRecvController {
   }
 
   // http://localhost:8080/mqrecv/save
-  @GetMapping("/save/queue")
+  @GetMapping("/mqrecv/save/queue")
+  @ResponseBody
   String recvSaveDefault(){
     try{
       String msg = "Save from " + outQueue + " at " + new Date();
@@ -62,7 +67,8 @@ public class MsgRecvController {
   }
 
   // http://localhost:8080/mqrecv/queue/DEV.QUEUE.2
-  @GetMapping("/queue/{name}")
+  @GetMapping("/mqrecv/queue/{name}")
+  @ResponseBody
   String recv(@PathVariable String name){
     // jmsTemplate.setReceiveTimeout(JmsTemplate.RECEIVE_TIMEOUT_NO_WAIT);
     try{

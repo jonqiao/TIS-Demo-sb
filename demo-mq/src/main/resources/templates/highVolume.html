@@ -9,7 +9,7 @@
   <main role="main" class="container-fluid">
     <!-- Nav tabs -->
     <!-- Tab panes -->
-    <ul class="nav nav-tabs" id="myTab" role="tablist" aria-orientation="vertical">
+    <ul class="nav nav-tabs bg-secondary" id="myTab" role="tablist" aria-orientation="vertical">
       <li class="nav-item" role="presentation">
         <a class="nav-link active" id="default-tab" data-toggle="tab" href="#default" role="tab" aria-controls="default" aria-selected="true">Default</a>
       </li>
@@ -23,25 +23,29 @@
         <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
       </li>
     </ul>
-    <div class="tab-content">
+    <div class="tab-content" style="background-image:url('/image00.jfif');">
       <div class="tab-pane active" id="default" role="tabpanel" aria-labelledby="default-tab">
         <br><br>
         <form class="was-validated" role="form" method="POST" th:action="@{/highvolume}">
           <div class="mb-3">
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text" for="validatedInputGroup1">Default Q</label>
+                <label class="input-group-text" for="groupInputDefault">Default Q</label>
               </div>
-              <input type="text" class="form-control" aria-describedby="validatedInputGroup1" value="DEV.QUEUE.1" disabled>
+              <input type="text" class="form-control is-valid" id="groupInputDefault" aria-describedby="groupInputDefault" value="DEV.QUEUE.1" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-light" type="reset">&nbsp;Reset &nbsp; </button>
+              </div>
             </div>
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text" for="validatedInputGroupSelect">Number &nbsp;</label>
+                <label class="input-group-text" for="groupSelectDefault">Number &nbsp;</label>
               </div>
-              <select class="custom-select" id="validatedInputGroupSelect" name="reqNum" required>
-                <option value="10000">10,000</option>
-                <option value="100000" selected>100,000</option>
-                <option value="1000000">1000,000</option>
+              <select class="custom-select" id="groupSelectDefault" name="reqNum" required>
+                <option value="100">One hundred</option>
+                <option value="10000" selected>Ten thousand</option>
+                <option value="1000000">One million</option>
+                <option value="10000000">Ten million</option>
               </select>
               <div class="input-group-append">
                 <button class="btn btn-outline-light" type="submit">Submit</button>
@@ -50,6 +54,7 @@
             <div class="invalid-feedback">Invalid, please chooose one...</div>
           </div>
         </form>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       </div>
       <div class="tab-pane" id="custom" role="tabpanel" aria-labelledby="custom-tab">
         <br><br>
@@ -57,19 +62,22 @@
           <div class="mb-3">
             <div class="input-group">
               <div class="input-group-prepend">
-                <label class="input-group-text" for="validatedInputGroup1">Default Q</label>
+                <label class="input-group-text" for="groupSelectCustom">Default Q</label>
               </div>
-              <select class="custom-select" id="validatedInputGroupSelect" name="reqQueue" required>
+              <select class="custom-select" id="groupSelectCustom" name="reqQueue" required>
                 <option value="DEV.QUEUE.1">DEV.QUEUE.1</option>
                 <option value="DEV.QUEUE.2" selected>DEV.QUEUE.2</option>
                 <option value="DEV.QUEUE.3">DEV.QUEUE.3</option>
               </select>
+              <div class="input-group-append">
+                <button class="btn btn-outline-light" type="reset">&nbsp;Reset &nbsp; </button>
+              </div>
             </div>
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="validatedInputGroupPrepend">Number &nbsp;</span>
+                <span class="input-group-text" for="groupInputCustom">Number &nbsp;</span>
               </div>
-              <input type="number" min="1" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" value="100000" name="reqNum" required>
+              <input type="number" min="1000" step="1000" class="form-control is-invalid" id="groupInputCustom" aria-describedby="groupInputCustom" value="10000" name="reqNum" required>
               <div class="input-group-append">
                 <button class="btn btn-outline-light" type="submit">Submit</button>
               </div>
@@ -77,14 +85,17 @@
             <div class="invalid-feedback">Invalid, please input a number...</div>
           </div>
         </form>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       </div>
       <div class="tab-pane" id="others" role="tabpanel" aria-labelledby="others-tab">
         <br><br>
         To be continue...
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       </div>
       <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
         <br><br>
         To be continue...
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       </div>
     </div>
   </main><!-- /.container -->
