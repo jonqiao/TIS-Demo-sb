@@ -13,8 +13,11 @@ import java.util.Date;
 @Component
 public class MsgLsnComp {
 
-  @Value("${spring.jms.template.default-destination}")
+  @Value("${spring.jms.template.default-destination}") // DEV.QUEUE.1
   String defaultDest;
+
+  @Value("${demo.queue.in}") // DEV.QUEUE.3
+  String inQueue;
 
   // @JmsListener(destination = "${spring.jms.template.default-destination}")  // "DEV.QUEUE.1"
   // public void onMessageReceivedDefault(String msg) {
@@ -22,8 +25,18 @@ public class MsgLsnComp {
   // }
 
   @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "${spring.jms.template.default-destination}")
-  public void onMessageReceivedCust(String msg) {
+  public void onMessageReceivedDefault(String msg) {
     log.info("JmsListener on " + defaultDest  + " at " + new Date() + " String ==|======> " + msg);
+  }
+
+  @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "DEV.QUEUE.2")
+  public void onMessageReceivedStatic(String msg) {
+    log.info("JmsListener on DEV.QUEUE.2 at " + new Date() + " String ==|======> " + msg);
+  }
+
+  @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "${demo.queue.in}")
+  public void onMessageReceivedCust(String msg) {
+    log.info("JmsListener on " + inQueue  + " at " + new Date() + " String ==|======> " + msg);
   }
 
   // @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "${spring.jms.template.default-destination}")

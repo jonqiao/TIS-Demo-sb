@@ -20,7 +20,6 @@ import java.util.Date;
 
 @Slf4j
 @Controller
-@RequestMapping("mqsend")
 public class MsgSendController {
 
   @Value("${spring.jms.template.default-destination}") // DEV.QUEUE.1
@@ -29,35 +28,76 @@ public class MsgSendController {
   @Value("${demo.queue.in}") // DEV.QUEUE.3
   String inQueue;
 
-  @Value("${demo.file.in}")
-  String inFile;
+  @Value("${demo.file.default}")
+  String defaultFile;
 
   @Autowired
   private JmsTemplate jmsTemplate;
 
 
-  // http://localhost:8080/mqsend
+  // http://localhost:8080/
   @GetMapping
-  public String listUploadedFiles() throws IOException {
-    System.out.println("demo.file.in: " + inFile);
-    ClassPathResource classPathResource = new ClassPathResource(inFile);
-    InputStream is = classPathResource.getInputStream();
-    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-    while (reader.ready()) {
-     String line =  reader.readLine();
-     System.out.println(line);
+  public String index() throws IOException {
+    // List<String> lines = Files.readAllLines(Paths.get(defaultFile), StandardCharsets.UTF_8);
+    // for (String line : lines) {
+    //   System.out.println(line);
+    // }
+    return "index";
+  }
+
+  // http://localhost:8080/upload
+  @GetMapping("/mqupload")
+  public String fileUpload() throws IOException {
+    return "uploadForm";
+  }
+
+  // http://localhost:8080/upload/file
+  @PostMapping("/mqupload/file")
+  public String handleFileUpload(@RequestParam(value="file",required = false) MultipartFile file, Model model) throws IOException {
+    if (file == null || file.isEmpty()) {
+      System.out.println("No uploadFile, use defaultFile instead...");
+      ClassPathResource classPathResource = new ClassPathResource(defaultFile);
+      InputStream is = classPathResource.getInputStream();
+      BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+      while (reader.ready()) {
+        String line =  reader.readLine();
+        System.out.println("defaultFile: " + line);
+        jmsTemplate.convertAndSend(defaultDest, line);
+      }
+      model.addAttribute("message1", "You successfully send default msg to MQ!");
+    } else {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+      while(reader.ready()) {
+        String line = reader.readLine();
+        System.out.println("uploadFile: " + line);
+        jmsTemplate.convertAndSend(inQueue, line);
+      }
+      model.addAttribute("message2", "You successfully send msg to MQ with " + file.getOriginalFilename() + "!");
     }
     return "uploadForm";
   }
 
-  // http://localhost:8080/mqsend/queue/DEV.QUEUE.2
-  @GetMapping("/queue/{name}")
+  // http://localhost:8080/mqsend/queue/default
+  @GetMapping("/mqsend/queue/default") // DEV.QUEUE.1
   @ResponseBody
-  String send(@PathVariable String name) {
+  String sendToDefaultQ() {
     try {
-      String msg = "Send msg to IBM MQ at " + new Date();
+      String msg = "Send msg to default Q DEV.QUEUE.1 at " + new Date();
       jmsTemplate.convertAndSend(defaultDest, "Hello World!");
-      jmsTemplate.convertAndSend(inQueue, "Hello World!");
+      log.info(msg);
+      return msg;
+    } catch (JmsException ex) {
+      ex.printStackTrace();
+      return "FAIL to send msg...";
+    }
+  }
+
+  // http://localhost:8080/mqsend/queue/DEV.QUEUE.2
+  @GetMapping("/mqsend/queue/{name}")
+  @ResponseBody
+  String sendToNameQ(@PathVariable String name) {
+    try {
+      String msg = "Send msg to Queue " + name + " at " + new Date();
       jmsTemplate.convertAndSend(name, "Hello World!");
       log.info(msg);
       return msg;
@@ -67,41 +107,28 @@ public class MsgSendController {
     }
   }
 
-  // http://localhost:8080/mqsend/queue
-  @GetMapping("/queue")
-  @ResponseBody
-  String sendDefault() {
-    try {
-      String msg = "Send msg to IBM MQ at " + new Date();
-      jmsTemplate.convertAndSend(defaultDest, "Hello World!");
-      jmsTemplate.convertAndSend(inQueue, "Hello World!");
-      log.info(msg);
-      return msg;
-    } catch (JmsException ex) {
-      ex.printStackTrace();
-      return "FAIL to send msg...";
-    }
+  // http://localhost:8080/highvolume
+  @GetMapping("/highvolume")
+  public String highvolumeIndex(Model model) throws IOException {
+    return "highVolume";
   }
 
-  // http://localhost:8080/mqsend
-  @PostMapping("/queue")
-  public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) throws IOException {
-
-    BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-    while(reader.ready()) {
-      String line = reader.readLine();
-      jmsTemplate.convertAndSend(defaultDest, line);
-      jmsTemplate.convertAndSend(inQueue, line);
+  // http://localhost:8080/highvolume
+  @PostMapping("/highvolume")
+  public String highvolumeSubmit(@RequestParam("reqNum") int reqNum,
+                                 @RequestParam(value = "reqQueue", required = false) String reqQueue,
+                                 Model model) throws IOException {
+    System.out.println("Custom request count: " + reqNum);
+    System.out.println("Custom request queue: " + reqQueue);
+    if (reqQueue == null) {
+      reqQueue = defaultDest;
     }
+    for (int i=1; i <= reqNum; i++) {
 
-    // List<String> lines = Files.readAllLines(Paths.get(inFile), StandardCharsets.UTF_8);
-    // for (String line : lines) {
-    //   jmsTemplate.convertAndSend(defaultDest, line);
-    //   jmsTemplate.convertAndSend(inQueue, line);
-    // }
-
-    model.addAttribute("message", "You successfully send msg to MQ with " + file.getOriginalFilename() + "!");
-    return "uploadForm";
+      jmsTemplate.convertAndSend(reqQueue, "Test message with index " + i);
+    }
+    model.addAttribute("message", "You successfully send default msg to MQ!");
+    return "highVolume";
   }
 
 }

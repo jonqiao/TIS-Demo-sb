@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/head :: commonhead('High Volume')"></head>
+
+<body>
+  <nav th:replace="common/head :: commonnav"></nav>
+
+  <main role="main" class="container-fluid">
+    <!-- Nav tabs -->
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist" aria-orientation="vertical">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="default-tab" data-toggle="tab" href="#default" role="tab" aria-controls="default" aria-selected="true">Default</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="custom-tab" data-toggle="tab" href="#custom" role="tab" aria-controls="custom" aria-selected="false">Custom</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="others-tab" data-toggle="tab" href="#others" role="tab" aria-controls="others" aria-selected="false">Others</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="default" role="tabpanel" aria-labelledby="default-tab">
+        <br><br>
+        <form class="was-validated" role="form" method="POST" th:action="@{/highvolume}">
+          <div class="mb-3">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="validatedInputGroup1">Default Q</label>
+              </div>
+              <input type="text" class="form-control" aria-describedby="validatedInputGroup1" value="DEV.QUEUE.1" disabled>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="validatedInputGroupSelect">Number &nbsp;</label>
+              </div>
+              <select class="custom-select" id="validatedInputGroupSelect" name="reqNum" required>
+                <option value="10000">10,000</option>
+                <option value="100000" selected>100,000</option>
+                <option value="1000000">1000,000</option>
+              </select>
+              <div class="input-group-append">
+                <button class="btn btn-outline-light" type="submit">Submit</button>
+              </div>
+            </div>
+            <div class="invalid-feedback">Invalid, please chooose one...</div>
+          </div>
+        </form>
+      </div>
+      <div class="tab-pane" id="custom" role="tabpanel" aria-labelledby="custom-tab">
+        <br><br>
+        <form class="was-validated" role="form" method="POST" th:action="@{/highvolume}">
+          <div class="mb-3">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="validatedInputGroup1">Default Q</label>
+              </div>
+              <select class="custom-select" id="validatedInputGroupSelect" name="reqQueue" required>
+                <option value="DEV.QUEUE.1">DEV.QUEUE.1</option>
+                <option value="DEV.QUEUE.2" selected>DEV.QUEUE.2</option>
+                <option value="DEV.QUEUE.3">DEV.QUEUE.3</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="validatedInputGroupPrepend">Number &nbsp;</span>
+              </div>
+              <input type="number" min="1" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" value="100000" name="reqNum" required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-light" type="submit">Submit</button>
+              </div>
+            </div>
+            <div class="invalid-feedback">Invalid, please input a number...</div>
+          </div>
+        </form>
+      </div>
+      <div class="tab-pane" id="others" role="tabpanel" aria-labelledby="others-tab">
+        <br><br>
+        To be continue...
+      </div>
+      <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+        <br><br>
+        To be continue...
+      </div>
+    </div>
+  </main><!-- /.container -->
+
+  <th:block th:replace="common/head :: commonjs"></th:block>
+</body>
+
+</html>

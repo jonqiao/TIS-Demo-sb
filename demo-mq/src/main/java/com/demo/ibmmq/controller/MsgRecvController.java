@@ -25,8 +25,8 @@ public class MsgRecvController {
   @Value("${demo.queue.out}") // DEV.QUEUE.3
   String outQueue;
 
-  @Value("${demo.file.out}")
-  String outFile;
+  @Value("${demo.file.output}")
+  String outputFile;
 
   @Autowired
   private JmsTemplate jmsTemplate;
@@ -52,8 +52,8 @@ public class MsgRecvController {
     try{
       String msg = "Save from " + outQueue + " at " + new Date();
       String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(outQueue)).map(obj -> obj.toString()).orElse("No msg...");
-      Files.write(Paths.get(outFile), resp.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-      Files.write(Paths.get(outFile), System.getProperty("line.separator").getBytes(), StandardOpenOption.APPEND);
+      Files.write(Paths.get(outputFile), resp.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+      Files.write(Paths.get(outputFile), System.getProperty("line.separator").getBytes(), StandardOpenOption.APPEND);
       return msg + " ==|======> " + resp;
     }catch(JmsException | IOException ex){
       ex.printStackTrace();
