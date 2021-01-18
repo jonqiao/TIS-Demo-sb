@@ -71,7 +71,7 @@ public class MsgSendController {
           TimeUnit.SECONDS.sleep(30);
         }
       }
-      model.addAttribute("message1", "You successfully send default msg to MQ!");
+      model.addAttribute("message1", "Success: send default msg to MQ!");
     } else {
       BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
       while(reader.ready()) {
@@ -84,7 +84,7 @@ public class MsgSendController {
           TimeUnit.SECONDS.sleep(30);
         }
       }
-      model.addAttribute("message2", "You successfully send msg to MQ with " + file.getOriginalFilename() + "!");
+      model.addAttribute("message2", "Success: send msg to MQ with " + file.getOriginalFilename() + "!");
     }
     return "uploadForm";
   }
@@ -130,18 +130,13 @@ public class MsgSendController {
   @PostMapping("/highvolume")
   public String highvolumeSubmit(@RequestParam("reqNum") int reqNum,
                                  @RequestParam(value = "reqQueue", required = false) String reqQueue,
-                                 Model model) throws InterruptedException {
+                                 Model model) {
     System.out.println("Custom request count: " + reqNum);
     System.out.println("Custom request queue: " + reqQueue);
+    boolean custReq = true;
     if (reqQueue == null) {
+      custReq = false;
       reqQueue = defaultDest;
-      model.addAttribute("defaultActive", "active");
-      model.addAttribute("customActive", "");
-      model.addAttribute("message1", "You successfully send high volume messages to default Q !");
-    } else {
-      model.addAttribute("defaultActive", "");
-      model.addAttribute("customActive", "active");
-      model.addAttribute("message2", "You successfully send high volume messages to Q " + reqQueue + " !");
     }
     for (int i=0; i<reqNum; i++) {
       try {
@@ -156,8 +151,26 @@ public class MsgSendController {
         //   }
         // }
         ex.printStackTrace();
-        TimeUnit.SECONDS.sleep(30);
+        if (custReq) {
+          model.addAttribute("defaultActive", "");
+          model.addAttribute("customActive", "active");
+          model.addAttribute("message2", "Fail: send high volume messages to " + reqQueue + " !");
+        } else {
+          model.addAttribute("defaultActive", "active");
+          model.addAttribute("customActive", "");
+          model.addAttribute("message1", "Fail: send high volume messages to default Q !");
+        }
+        return "highVolume";
       }
+    }
+    if (custReq) {
+      model.addAttribute("defaultActive", "");
+      model.addAttribute("customActive", "active");
+      model.addAttribute("message2", "Success: send high volume messages to " + reqQueue + " !");
+    } else {
+      model.addAttribute("defaultActive", "active");
+      model.addAttribute("customActive", "");
+      model.addAttribute("message1", "Success: send high volume messages to default Q !");
     }
     return "highVolume";
   }

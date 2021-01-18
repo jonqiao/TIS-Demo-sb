@@ -23,7 +23,7 @@
         <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
       </li>
     </ul>
-    <div class="tab-content" style="background-image:url('/image00.jfif');">
+    <div class="tab-content" style="background-image:url('/image/image00.jfif');">
       <div class="tab-pane" th:classappend="${defaultActive == 'active'} ? 'active' : ''" id="default" role="tabpanel" aria-labelledby="default-tab">
         <br><br>
         <form class="was-validated" role="form" method="POST" th:action="@{/highvolume}">
@@ -79,7 +79,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" for="groupInputCustom">Number &nbsp;</span>
               </div>
-              <input type="number" min="1000" step="1000" class="form-control is-invalid" id="groupInputCustom" aria-describedby="groupInputCustom" value="10000" name="reqNum" required>
+              <input type="number" min="100" step="100" class="form-control is-invalid" id="groupInputCustom" aria-describedby="groupInputCustom" value="1000" name="reqNum" required>
               <div class="input-group-append">
                 <button class="btn btn-outline-light" type="submit">Submit</button>
               </div>

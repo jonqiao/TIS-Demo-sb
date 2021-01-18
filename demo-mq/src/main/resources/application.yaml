@@ -5,8 +5,8 @@ spring:
 #    multipart:
 #      max-file-size: 128KB
 #      max-request-size: 128KB
-  resources:
-    static-locations: classpath:/static/,classpath:/public/,classpath:/resources/,classpath:/META-INF/resources/,classpath:/templates/,classpath:/static/image/
+#  resources:
+#    static-locations: classpath:/static/,classpath:/public/,classpath:/resources/,classpath:/META-INF/resources/,classpath:/templates/
   jms:
     listener:
       receive-timeout: 30000 # resets the initial timeout value to 30 seconds which has been shown to be more cost-effective.
