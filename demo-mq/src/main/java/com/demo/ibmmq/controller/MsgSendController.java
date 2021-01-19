@@ -161,7 +161,7 @@ public class MsgSendController {
         //   }
         // }
         ex.printStackTrace();
-        TimeUnit.SECONDS.sleep(5);
+        TimeUnit.SECONDS.sleep(30);
         if (custReq) {
           model.addAttribute("defaultActive", "");
           model.addAttribute("customActive", "active");
