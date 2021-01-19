@@ -130,17 +130,27 @@ public class MsgSendController {
   @PostMapping("/highvolume")
   public String highvolumeSubmit(@RequestParam("reqNum") int reqNum,
                                  @RequestParam(value = "reqQueue", required = false) String reqQueue,
-                                 Model model) {
+                                 Model model) throws InterruptedException {
     System.out.println("Custom request count: " + reqNum);
     System.out.println("Custom request queue: " + reqQueue);
-    boolean custReq = true;
+    boolean custReq = false;
     if (reqQueue == null) {
-      custReq = false;
       reqQueue = defaultDest;
+    } else {
+      custReq = true;
     }
     for (int i=0; i<reqNum; i++) {
       try {
         jmsTemplate.convertAndSend(reqQueue, "Total " + reqNum + " test message with index " + i);
+        if (custReq) {
+          model.addAttribute("defaultActive", "");
+          model.addAttribute("customActive", "active");
+          model.addAttribute("message2", "Success: send high volume messages to " + reqQueue + " !");
+        } else {
+          model.addAttribute("defaultActive", "active");
+          model.addAttribute("customActive", "");
+          model.addAttribute("message1", "Success: send high volume messages to default Q !");
+        }
       } catch (JmsException ex) {
         // Exception linkedEx = ex.getLinkedException();
         // if (ex.getLinkedException() != null) {
@@ -151,6 +161,7 @@ public class MsgSendController {
         //   }
         // }
         ex.printStackTrace();
+        TimeUnit.SECONDS.sleep(5);
         if (custReq) {
           model.addAttribute("defaultActive", "");
           model.addAttribute("customActive", "active");
@@ -160,17 +171,7 @@ public class MsgSendController {
           model.addAttribute("customActive", "");
           model.addAttribute("message1", "Fail: send high volume messages to default Q !");
         }
-        return "highVolume";
       }
-    }
-    if (custReq) {
-      model.addAttribute("defaultActive", "");
-      model.addAttribute("customActive", "active");
-      model.addAttribute("message2", "Success: send high volume messages to " + reqQueue + " !");
-    } else {
-      model.addAttribute("defaultActive", "active");
-      model.addAttribute("customActive", "");
-      model.addAttribute("message1", "Success: send high volume messages to default Q !");
     }
     return "highVolume";
   }

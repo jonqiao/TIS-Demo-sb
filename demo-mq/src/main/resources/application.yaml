@@ -23,8 +23,8 @@ spring:
 
 ibm:
   mq:
-    clientId: DemoMQ20201115
-    applicationName: DemoMQ
+    clientId: CID-Java-App
+    applicationName: MQApp
     queueManager: QM1
     channel: DEV.ADMIN.SVRCONN
     connName: localhost(1414)
