@@ -39,8 +39,8 @@ demo:
   storage:
     location: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\upload
   queue:
-    in: DEV.QUEUE.3
-    out: DEV.QUEUE.3
+    local2: DEV.QUEUE.2
+    local3: DEV.QUEUE.3
   file:
     default: archive/msg.in
     output: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\msg.out

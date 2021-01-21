@@ -23,27 +23,21 @@ import java.util.Optional;
 public class MsgRecvController {
 
   @Autowired
-  CachingConnectionFactory cachingConnectionFactory;
+  private CachingConnectionFactory cachingConnectionFactory;
 
-  @Value("${demo.queue.out}") // DEV.QUEUE.3
-  String outQueue;
+  @Value("${demo.queue.local2}") // DEV.QUEUE.2
+  private String outQueue;
 
   @Value("${demo.file.output}")
-  String outputFile;
+  private String outputFile;
 
   @Autowired
   private JmsTemplate jmsTemplate;
 
-  // http://localhost:8080/upload
-  @GetMapping("/monitor")
-  public String monitorIndex() throws JMSException {
-    return "monitor";
-  }
-
   // http://localhost:8080/mqrecv/queue
   @GetMapping("/mqrecv/queue")
   @ResponseBody
-  String recvDefault(){
+  public String recvDefault(){
     // jmsTemplate.setReceiveTimeout(JmsTemplate.RECEIVE_TIMEOUT_NO_WAIT);
     try{
       String msg = "Receive from " + outQueue + " at " + new Date();
@@ -59,7 +53,7 @@ public class MsgRecvController {
   // http://localhost:8080/mqrecv/save
   @GetMapping("/mqrecv/save/queue")
   @ResponseBody
-  String recvSaveDefault(){
+  public String recvSaveDefault() {
     try{
       String msg = "Save from " + outQueue + " at " + new Date();
       String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(outQueue)).map(obj -> obj.toString()).orElse("No msg...");
@@ -75,7 +69,7 @@ public class MsgRecvController {
   // http://localhost:8080/mqrecv/queue/DEV.QUEUE.2
   @GetMapping("/mqrecv/queue/{name}")
   @ResponseBody
-  String recv(@PathVariable String name){
+  public String recv(@PathVariable String name){
     // jmsTemplate.setReceiveTimeout(JmsTemplate.RECEIVE_TIMEOUT_NO_WAIT);
     try{
       String msg = "Receive from " + name + " at " + new Date();

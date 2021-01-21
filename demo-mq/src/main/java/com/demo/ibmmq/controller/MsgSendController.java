@@ -25,13 +25,13 @@ import java.util.concurrent.TimeUnit;
 public class MsgSendController {
 
   @Value("${spring.jms.template.default-destination}") // DEV.QUEUE.1
-  String defaultDest;
+  private String defaultDest;
 
-  @Value("${demo.queue.in}") // DEV.QUEUE.3
-  String inQueue;
+  @Value("${demo.queue.local3}") // DEV.QUEUE.3
+  private String inQueue;
 
   @Value("${demo.file.default}")
-  String defaultFile;
+  private String defaultFile;
 
   @Autowired
   private JmsTemplate jmsTemplate;
@@ -92,7 +92,7 @@ public class MsgSendController {
   // http://localhost:8080/mqsend/queue/default
   @GetMapping("/mqsend/queue/default") // DEV.QUEUE.1
   @ResponseBody
-  String sendToDefaultQ() {
+  public String sendToDefaultQ() {
     try {
       String msg = "Send msg to default Q DEV.QUEUE.1 at " + new Date();
       jmsTemplate.convertAndSend(defaultDest, "Hello World!");
@@ -107,7 +107,7 @@ public class MsgSendController {
   // http://localhost:8080/mqsend/queue/DEV.QUEUE.2
   @GetMapping("/mqsend/queue/{name}")
   @ResponseBody
-  String sendToNameQ(@PathVariable String name) {
+  public String sendToNameQ(@PathVariable String name) {
     try {
       String msg = "Send msg to Queue " + name + " at " + new Date();
       jmsTemplate.convertAndSend(name, "Hello World!");
