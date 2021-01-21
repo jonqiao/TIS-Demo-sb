@@ -13,10 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -66,8 +63,10 @@ public class MsgSendController {
         System.out.println("defaultFile: " + line);
         try {
           jmsTemplate.convertAndSend(defaultDest, line);
-        } catch (JmsException ex) {
-          ex.printStackTrace();
+        } catch (JmsException e) {
+          StringWriter sw = new StringWriter();
+          e.printStackTrace(new PrintWriter(sw));
+          log.warn(sw.toString());
           TimeUnit.SECONDS.sleep(30);
         }
       }
@@ -79,8 +78,10 @@ public class MsgSendController {
         System.out.println("uploadFile: " + line);
         try {
           jmsTemplate.convertAndSend(inQueue, line);
-        } catch (JmsException ex) {
-          ex.printStackTrace();
+        } catch (JmsException e) {
+          StringWriter sw = new StringWriter();
+          e.printStackTrace(new PrintWriter(sw));
+          log.warn(sw.toString());
           TimeUnit.SECONDS.sleep(30);
         }
       }
@@ -98,8 +99,10 @@ public class MsgSendController {
       jmsTemplate.convertAndSend(defaultDest, "Hello World!");
       log.info(msg);
       return msg;
-    } catch (JmsException ex) {
-      ex.printStackTrace();
+    } catch (JmsException e) {
+      StringWriter sw = new StringWriter();
+      e.printStackTrace(new PrintWriter(sw));
+      log.warn(sw.toString());
       return "FAIL to send msg...";
     }
   }
@@ -113,8 +116,10 @@ public class MsgSendController {
       jmsTemplate.convertAndSend(name, "Hello World!");
       log.info(msg);
       return msg;
-    } catch (JmsException ex) {
-      ex.printStackTrace();
+    } catch (JmsException e) {
+      StringWriter sw = new StringWriter();
+      e.printStackTrace(new PrintWriter(sw));
+      log.warn(sw.toString());
       return "FAIL to send msg...";
     }
   }
@@ -151,7 +156,7 @@ public class MsgSendController {
           model.addAttribute("customActive", "");
           model.addAttribute("message1", "Success: send high volume messages to default Q !");
         }
-      } catch (JmsException ex) {
+      } catch (JmsException e) {
         // Exception linkedEx = ex.getLinkedException();
         // if (ex.getLinkedException() != null) {
         //   if (linkedEx instanceof MQException) {
@@ -160,7 +165,9 @@ public class MsgSendController {
         //     // Handle the reason code accordingly
         //   }
         // }
-        ex.printStackTrace();
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        log.warn(sw.toString());
         TimeUnit.SECONDS.sleep(10);
         if (custReq) {
           model.addAttribute("defaultActive", "");

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.jms.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -44,8 +46,10 @@ public class MsgRecvController {
       String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(outQueue)).map(obj -> obj.toString()).orElse("No msg...");
       log.info(msg + " ==|======> " + resp);
       return msg + " ==|======> " + resp;
-    }catch(JmsException ex){
-      ex.printStackTrace();
+    }catch(JmsException e){
+      StringWriter sw = new StringWriter();
+      e.printStackTrace(new PrintWriter(sw));
+      log.warn(sw.toString());
       return "FAIL to receive msg...";
     }
   }
@@ -60,8 +64,10 @@ public class MsgRecvController {
       Files.write(Paths.get(outputFile), resp.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
       Files.write(Paths.get(outputFile), System.getProperty("line.separator").getBytes(), StandardOpenOption.APPEND);
       return msg + " ==|======> " + resp;
-    }catch(JmsException | IOException ex){
-      ex.printStackTrace();
+    }catch(JmsException | IOException e){
+      StringWriter sw = new StringWriter();
+      e.printStackTrace(new PrintWriter(sw));
+      log.warn(sw.toString());
       return "FAIL to receive msg...";
     }
   }
@@ -76,8 +82,10 @@ public class MsgRecvController {
       String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(name)).map(obj -> obj.toString()).orElse("No msg...");
       log.info(msg + " ==|======> " + resp);
       return msg + " ==|======> " + resp;
-    }catch(JmsException ex){
-      ex.printStackTrace();
+    }catch(JmsException e){
+      StringWriter sw = new StringWriter();
+      e.printStackTrace(new PrintWriter(sw));
+      log.warn(sw.toString());
       return "FAIL to receive msg...";
     }
   }

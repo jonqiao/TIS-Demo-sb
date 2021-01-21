@@ -23,8 +23,8 @@ spring:
 
 ibm:
   mq:
-    clientId: CID-Java-App
-    applicationName: MQApp
+    clientId: ClientWeb
+    applicationName: DemoMQ
     queueManager: QM1
     channel: DEV.ADMIN.SVRCONN
     connName: localhost(1414)
@@ -38,7 +38,12 @@ ibm:
 demo:
   storage:
     location: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\upload
+  mq:
+    applicationName: Monitor
+    hostname: localhost
+    port: 1414
   queue:
+    local1: DEV.QUEUE.1
     local2: DEV.QUEUE.2
     local3: DEV.QUEUE.3
   file:

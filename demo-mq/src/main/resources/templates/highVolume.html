@@ -11,10 +11,12 @@
     <!-- Tab panes -->
     <ul class="nav nav-tabs bg-secondary" id="myTab" role="tablist" aria-orientation="vertical">
       <li class="nav-item" role="presentation">
-        <a class="nav-link" th:classappend="${defaultActive == 'active'} ? 'active' : ''" id="default-tab" data-toggle="tab" href="#default" role="tab" aria-controls="default" aria-selected="true">Default</a>
+        <a class="nav-link" th:classappend="${defaultActive == 'active'} ? 'active' : ''" id="default-tab" data-toggle="tab" href="#default" role="tab" aria-controls="default"
+          aria-selected="true">Default</a>
       </li>
       <li class="nav-item" role="presentation">
-        <a class="nav-link" th:classappend="${customActive == 'active'} ? 'active' : ''" id="custom-tab" data-toggle="tab" href="#custom" role="tab" aria-controls="custom" aria-selected="false">Custom</a>
+        <a class="nav-link" th:classappend="${customActive == 'active'} ? 'active' : ''" id="custom-tab" data-toggle="tab" href="#custom" role="tab" aria-controls="custom"
+          aria-selected="false">Custom</a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="others-tab" data-toggle="tab" href="#others" role="tab" aria-controls="others" aria-selected="false">Others</a>

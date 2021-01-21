@@ -16,8 +16,10 @@ public class MsgLsnComp {
   @Value("${spring.jms.template.default-destination}") // DEV.QUEUE.1
   String defaultDest;
 
-  @Value("${demo.queue.in}") // DEV.QUEUE.3
-  String inQueue;
+  @Value("${demo.queue.local2}") // DEV.QUEUE.2
+  private String localQ2;
+  @Value("${demo.queue.local3}") // DEV.QUEUE.3
+  private String localQ3;
 
   // @JmsListener(destination = "${spring.jms.template.default-destination}")  // "DEV.QUEUE.1"
   // public void onMessageReceivedDefault(String msg) {
@@ -29,14 +31,14 @@ public class MsgLsnComp {
     log.info("JmsListener on " + defaultDest  + " at " + new Date() + " String ==|======> " + msg);
   }
 
-  @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "DEV.QUEUE.2")
-  public void onMessageReceivedStatic(String msg) {
-    log.info("JmsListener on DEV.QUEUE.2 at " + new Date() + " String ==|======> " + msg);
+  @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "${demo.queue.local2}")
+  public void onMessageReceivedLocalQ2(String msg) {
+    log.info("JmsListener on " + localQ2  + " at " + new Date() + " String ==|======> " + msg);
   }
 
-  @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "${demo.queue.in}")
-  public void onMessageReceivedCust(String msg) {
-    log.info("JmsListener on " + inQueue  + " at " + new Date() + " String ==|======> " + msg);
+  @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "${demo.queue.local3}")
+  public void onMessageReceivedLocalQ3(String msg) {
+    log.info("JmsListener on " + localQ3  + " at " + new Date() + " String ==|======> " + msg);
   }
 
   // @JmsListener(containerFactory = "myJmsListenerContainerFactory", destination = "${spring.jms.template.default-destination}")

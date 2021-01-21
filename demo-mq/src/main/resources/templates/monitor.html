@@ -7,35 +7,51 @@
 	<nav th:replace="common/head :: commonnav"></nav>
 
 	<main role="main" class="container-fluid">
+
 		<div class="card-deck">
 			<div class="card border-secondary">
 				<img src="/image/image10.jfif" class="card-img-top" alt="...">
 				<div class="card-body text-secondary">
 					<h5 class="card-title">DEV.QUEUE.1</h5>
-					<p class="card-text">Queue Depth...</p>
+					CurrentDepth: <span class="card-text" th:text="${q1CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<small class="text-muted">Last updated 1 mins ago</small>
+					<form id="form1" class="" role="form" method="POST" th:action="@{/monitor/all}">
+						<div class="input-group mb-3">
+							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
+							<button id="refreshButton1" type="submit"><i class="fas fa-sync"></i></button>
+						</div>
+					</form>
 				</div>
 			</div>
 			<div class="card border-secondary">
 				<img src="/image/image30.jfif" class="card-img-top" alt="...">
 				<div class="card-body text-secondary">
 					<h5 class="card-title">DEV.QUEUE.2</h5>
-					<p class="card-text">Queue Depth...</p>
+					CurrentDepth: <span class="card-text" th:text="${q2CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<small class="text-muted">Last updated 1 mins ago</small>
+					<form id="form2" class="" role="form" method="POST" th:action="@{/monitor/all}">
+						<div class="input-group mb-3">
+							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
+							<button id="refreshButton2" type="submit"><i class="fas fa-sync"></i></button>
+						</div>
+					</form>
 				</div>
 			</div>
 			<div class="card border-secondary">
 				<img src="/image/image20.jfif" class="card-img-top" alt="...">
 				<div class="card-body text-secondary">
 					<h5 class="card-title">DEV.QUEUE.3</h5>
-					<p class="card-text">Queue Depth...</p>
+					CurrentDepth: <span class="card-text" th:text="${q3CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<small class="text-muted">Last updated 1 mins ago</small>
+					<form id="form3" class="" role="form" method="POST" th:action="@{/monitor/all}">
+						<div class="input-group mb-3">
+							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
+							<button id="refreshButton3" type="submit"><i class="fas fa-sync"></i></button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
