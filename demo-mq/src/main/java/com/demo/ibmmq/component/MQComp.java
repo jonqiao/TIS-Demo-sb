@@ -10,10 +10,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -31,28 +29,12 @@ public class MQComp {
 
   public MQQueueManager connectQmgr(MQProperties mqProperties) throws InterruptedException {
     MQQueueManager qMgr = null;
-    for (int i=0; i < 2; i++) {
-      try {
-        qMgr = MQUtil.initQueueManager(mqProperties);
-      } catch (MQException e) {
-        if (MQRC.contains(e.reasonCode)) {
-          log.warn("Retry due to MQ connection: CC = " + e.completionCode + "; RC = " + e.reasonCode);
-          StringWriter sw = new StringWriter();
-          e.printStackTrace(new PrintWriter(sw));
-          log.warn(sw.toString());
-          TimeUnit.SECONDS.sleep(60);
-        } else {
-          StringWriter sw = new StringWriter();
-          e.printStackTrace(new PrintWriter(sw));
-          log.warn(sw.toString());
-          break;
-        }
-      } catch (MalformedURLException e) {
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        log.warn(sw.toString());
-        break;
-      }
+    try {
+      qMgr = MQUtil.initQueueManager(mqProperties);
+    } catch (Exception e) {
+      StringWriter sw = new StringWriter();
+      e.printStackTrace(new PrintWriter(sw));
+      log.warn(sw.toString());
     }
     return qMgr;
   }
