@@ -12,7 +12,7 @@ import org.springframework.util.ErrorHandler;
 
 @Slf4j
 @Configuration
-public class myJmsConfig {
+public class MyJmsConfig {
 
   @Autowired
   CachingConnectionFactory cachingConnectionFactory;
