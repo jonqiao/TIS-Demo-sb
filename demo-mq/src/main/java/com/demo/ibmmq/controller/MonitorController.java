@@ -1,5 +1,6 @@
 package com.demo.ibmmq.controller;
 
+import com.demo.ibmmq.bean.MQProperties;
 import com.demo.ibmmq.component.MQComp;
 import com.ibm.mq.MQQueueManager;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ public class MonitorController {
 
   @Autowired
   private JmsTemplate jmsTemplate;
+  @Autowired
+  private MQProperties mqProperties;
 
   // http://localhost:8080/monitor
   @GetMapping("/monitor")
@@ -37,9 +40,9 @@ public class MonitorController {
   @PostMapping("/monitor/all")
   public String monitorIndex(Model model) {
     long start = System.currentTimeMillis();
-    log.info("start: " + start);
+    log.info("Monitor start: " + start);
     try {
-      MQQueueManager qMgr = new MQComp().connQmgr();
+      MQQueueManager qMgr = new MQComp().connectQmgr(mqProperties);
       if (qMgr != null) {
         Integer q1CurDepth = MQComp.chkQueueDepth(qMgr, localQ1);
         if (q1CurDepth != null) {
@@ -75,8 +78,8 @@ public class MonitorController {
       log.warn(sw.toString());
     }
     long end = System.currentTimeMillis();
-    log.info("end: " + end);
-    log.info("One time monitor take: " + (end - start));
+    log.info("Monitor end: " + end);
+    log.info("Monitor take: " + (end - start) + " for one time...");
     return "monitor";
   }
 

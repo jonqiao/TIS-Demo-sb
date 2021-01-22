@@ -26,22 +26,24 @@ ibm:
     clientId: ClientWeb
     applicationName: DemoMQ
     queueManager: QM1
-    channel: DEV.ADMIN.SVRCONN
-    connName: localhost(1414)
     user: admin
     password: passw0rd
+    channel: DEV.ADMIN.SVRCONN
+    connName: localhost(1414)
     # ccdtUrl: file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmq\\AMQCLCHL.TAB
     # sslCipherSpec:     # Cipher Spec, sets connectionFactory property WMQConstants.WMQ_SSL_CIPHER_SPEC
 #    additional-properties:
 
-
 demo:
-  storage:
-    location: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\upload
   mq:
     applicationName: Monitor
+    queueManager: QM1
+    user: admin
+    password: passw0rd
+    channel: DEV.ADMIN.SVRCONN
     hostname: localhost
     port: 1414
+    ccdtUrl: file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmq\\AMQCLCHL.TAB
   queue:
     local1: DEV.QUEUE.1
     local2: DEV.QUEUE.2
@@ -49,6 +51,8 @@ demo:
   file:
     default: archive/msg.in
     output: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\msg.out
+  storage:
+    location: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\upload
 logging:
   file:
     name: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\DemoMQ.log

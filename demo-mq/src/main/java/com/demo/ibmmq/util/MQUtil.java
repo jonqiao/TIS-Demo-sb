@@ -1,25 +1,27 @@
 package com.demo.ibmmq.util;
 
-import com.ibm.mq.*;
+import com.demo.ibmmq.bean.MQProperties;
+import com.ibm.mq.MQEnvironment;
+import com.ibm.mq.MQException;
+import com.ibm.mq.MQQueue;
+import com.ibm.mq.MQQueueManager;
 import com.ibm.mq.constants.CMQC;
 import com.ibm.mq.constants.MQConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 @Slf4j
 @Component
 public class MQUtil {
 
-  public static MQQueueManager initConnection(Map map) throws MQException {
-    MQEnvironment.properties.put(MQConstants.APPNAME_PROPERTY, map.get("applicationName"));
-    MQEnvironment.hostname = (String) map.get("hostname");
-    MQEnvironment.port = (int) map.get("port");
-    MQEnvironment.userID = (String) map.get("user");
-    MQEnvironment.password = (String) map.get("password");
-    MQEnvironment.channel = (String) map.get("channel");
-    MQQueueManager qMgr = new MQQueueManager((String) map.get("qMgrName"));
+  public static MQQueueManager initQueueManager(MQProperties mqProperties) throws MQException {
+    MQEnvironment.properties.put(MQConstants.APPNAME_PROPERTY, mqProperties.getApplicationName());
+    MQEnvironment.hostname = mqProperties.getHostname();
+    MQEnvironment.port = mqProperties.getPort();
+    MQEnvironment.userID = mqProperties.getUser();
+    MQEnvironment.password = mqProperties.getPassword();
+    MQEnvironment.channel = mqProperties.getChannel();
+    MQQueueManager qMgr = new MQQueueManager(mqProperties.getQMgrName());
     return qMgr;
   }
 
