@@ -20,4 +20,5 @@ public class MQProperties {
   private String hostname;
   private int port;
   private String ccdtUrl;
+  private String sslCipherSuite;
 }

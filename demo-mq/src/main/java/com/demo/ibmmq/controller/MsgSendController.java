@@ -1,7 +1,5 @@
 package com.demo.ibmmq.controller;
 
-import com.ibm.mq.MQException;
-import com.sun.corba.se.impl.presentation.rmi.DynamicMethodMarshallerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +37,7 @@ public class MsgSendController {
   public String index() {
     // List<String> lines = Files.readAllLines(Paths.get(defaultFile), StandardCharsets.UTF_8);
     // for (String line : lines) {
-    //   System.out.println(line);
+    //   log.info(line);
     // }
     return "index";
   }
@@ -54,13 +52,13 @@ public class MsgSendController {
   @PostMapping("/mqupload/file")
   public String handleFileUpload(@RequestParam(value="file",required = false) MultipartFile file, Model model) throws IOException, InterruptedException {
     if (file == null || file.isEmpty()) {
-      System.out.println("No uploadFile, use defaultFile instead...");
+      log.info("No uploadFile, use defaultFile instead...");
       ClassPathResource classPathResource = new ClassPathResource(defaultFile);
       InputStream is = classPathResource.getInputStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(is));
       while (reader.ready()) {
         String line =  reader.readLine();
-        System.out.println("defaultFile: " + line);
+        log.info("defaultFile: " + line);
         try {
           jmsTemplate.convertAndSend(defaultDest, line);
         } catch (JmsException e) {
@@ -75,7 +73,7 @@ public class MsgSendController {
       BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
       while(reader.ready()) {
         String line = reader.readLine();
-        System.out.println("uploadFile: " + line);
+        log.info("uploadFile: " + line);
         try {
           jmsTemplate.convertAndSend(inQueue, line);
         } catch (JmsException e) {
@@ -136,8 +134,8 @@ public class MsgSendController {
   public String highvolumeSubmit(@RequestParam("reqNum") int reqNum,
                                  @RequestParam(value = "reqQueue", required = false) String reqQueue,
                                  Model model) throws InterruptedException {
-    System.out.println("Custom request count: " + reqNum);
-    System.out.println("Custom request queue: " + reqQueue);
+    log.info("Custom request count: " + reqNum);
+    log.info("Custom request queue: " + reqQueue);
     boolean custReq = false;
     if (reqQueue == null) {
       reqQueue = defaultDest;

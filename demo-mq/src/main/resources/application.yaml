@@ -31,8 +31,10 @@ ibm:
     channel: DEV.ADMIN.SVRCONN
     connName: localhost(1414)
     # ccdtUrl: file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmq\\AMQCLCHL.TAB
-    # sslCipherSpec:     # Cipher Spec, sets connectionFactory property WMQConstants.WMQ_SSL_CIPHER_SPEC
-#    additional-properties:
+    # sslCipherSpec: TLS_RSA_WITH_AES_256_CBC_SHA256
+#    sslCipherSuite: TLS_RSA_WITH_AES_256_CBC_SHA256
+    useIBMCipherMappings: false
+    # additional-properties:
 
 demo:
   mq:
@@ -44,6 +46,7 @@ demo:
     hostname: localhost
     port: 1414
     ccdtUrl: file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmq\\AMQCLCHL.TAB
+    sslCipherSuite: TLS_RSA_WITH_AES_256_CBC_SHA256
   queue:
     local1: DEV.QUEUE.1
     local2: DEV.QUEUE.2

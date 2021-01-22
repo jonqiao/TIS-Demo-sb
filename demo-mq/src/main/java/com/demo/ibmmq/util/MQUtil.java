@@ -18,11 +18,13 @@ public class MQUtil {
 
   public static MQQueueManager initQueueManager(MQProperties mqProperties) throws MQException, MalformedURLException {
     MQEnvironment.properties.put(MQConstants.APPNAME_PROPERTY, mqProperties.getApplicationName());
+    // MQEnvironment.sslCipherSuite = mqProperties.getSslCipherSuite();
+    MQEnvironment.CCSID = 1208;
     MQEnvironment.userID = mqProperties.getUser();
     MQEnvironment.password = mqProperties.getPassword();
-    MQEnvironment.channel = mqProperties.getChannel();
     MQEnvironment.hostname = mqProperties.getHostname();
     MQEnvironment.port = mqProperties.getPort();
+    MQEnvironment.channel = mqProperties.getChannel();
     MQQueueManager qMgr = new MQQueueManager(mqProperties.getQMgrName());
 
     // URL chanTab = new URL(mqProperties.getCcdtUrl());
