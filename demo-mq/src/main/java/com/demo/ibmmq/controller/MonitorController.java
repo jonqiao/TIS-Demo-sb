@@ -69,13 +69,12 @@ public class MonitorController {
         model.addAttribute("q3CurDepth", "unknown qMgr connection");
       }
     } catch (Exception e) {
-      model.addAttribute("q1CurDepth", "unknown qMgr connection");
-      model.addAttribute("q2CurDepth", "unknown qMgr connection");
-      model.addAttribute("q3CurDepth", "unknown qMgr connection");
-
       StringWriter sw = new StringWriter();
       e.printStackTrace(new PrintWriter(sw));
       log.warn(sw.toString());
+      model.addAttribute("q1CurDepth", "Found Exception");
+      model.addAttribute("q2CurDepth", "Found Exception");
+      model.addAttribute("q3CurDepth", "Found Exception");
     }
     long end = System.currentTimeMillis();
     log.info("Monitor end: " + end);
