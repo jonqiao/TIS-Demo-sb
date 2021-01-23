@@ -32,16 +32,6 @@ public class MsgSendController {
   private JmsTemplate jmsTemplate;
 
 
-  // http://localhost:8080/
-  @GetMapping
-  public String index() {
-    // List<String> lines = Files.readAllLines(Paths.get(defaultFile), StandardCharsets.UTF_8);
-    // for (String line : lines) {
-    //   log.info(line);
-    // }
-    return "index";
-  }
-
   // http://localhost:8080/upload
   @GetMapping("/mqupload")
   public String fileUpload() {
@@ -50,40 +40,54 @@ public class MsgSendController {
 
   // http://localhost:8080/upload/file
   @PostMapping("/mqupload/file")
-  public String handleFileUpload(@RequestParam(value="file",required = false) MultipartFile file, Model model) throws IOException, InterruptedException {
+  public String handleFileUpload(@RequestParam(value="file",required = false) MultipartFile file, Model model) {
     if (file == null || file.isEmpty()) {
-      log.info("No uploadFile, use defaultFile instead...");
+      log.info("No Uploaded File, Use Default File Instead.");
       ClassPathResource classPathResource = new ClassPathResource(defaultFile);
-      InputStream is = classPathResource.getInputStream();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-      while (reader.ready()) {
-        String line =  reader.readLine();
-        log.info("defaultFile: " + line);
-        try {
-          jmsTemplate.convertAndSend(defaultDest, line);
-        } catch (JmsException e) {
-          StringWriter sw = new StringWriter();
-          e.printStackTrace(new PrintWriter(sw));
-          log.warn(sw.toString());
-          TimeUnit.SECONDS.sleep(30);
+      try {
+        InputStream is = classPathResource.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        while (reader.ready()) {
+          String line =  reader.readLine();
+          log.info("defaultFile: " + line);
+          try {
+            jmsTemplate.convertAndSend(defaultDest, line);
+          } catch (JmsException e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            log.warn(sw.toString());
+            TimeUnit.SECONDS.sleep(30);
+          }
         }
+        model.addAttribute("message1", "Success: send default msg to MQ!");
+      } catch (Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        log.warn(sw.toString());
+        model.addAttribute("message1", "Fail: send default msg to MQ!");
       }
-      model.addAttribute("message1", "Success: send default msg to MQ!");
     } else {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-      while(reader.ready()) {
-        String line = reader.readLine();
-        log.info("uploadFile: " + line);
-        try {
-          jmsTemplate.convertAndSend(inQueue, line);
-        } catch (JmsException e) {
-          StringWriter sw = new StringWriter();
-          e.printStackTrace(new PrintWriter(sw));
-          log.warn(sw.toString());
-          TimeUnit.SECONDS.sleep(30);
+      try {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+        while(reader.ready()) {
+          String line = reader.readLine();
+          log.info("uploadFile: " + line);
+          try {
+            jmsTemplate.convertAndSend(inQueue, line);
+          } catch (JmsException e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            log.warn(sw.toString());
+            TimeUnit.SECONDS.sleep(30);
+          }
         }
+        model.addAttribute("message2", "Success: send msg to MQ with " + file.getOriginalFilename() + "!");
+      } catch (Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        log.warn(sw.toString());
+        model.addAttribute("message2", "Fail: send msg to MQ with " + file.getOriginalFilename() + "!");
       }
-      model.addAttribute("message2", "Success: send msg to MQ with " + file.getOriginalFilename() + "!");
     }
     return "uploadForm";
   }
@@ -133,7 +137,7 @@ public class MsgSendController {
   @PostMapping("/highvolume")
   public String highvolumeSubmit(@RequestParam("reqNum") int reqNum,
                                  @RequestParam(value = "reqQueue", required = false) String reqQueue,
-                                 Model model) throws InterruptedException {
+                                 Model model) {
     log.info("Custom request count: " + reqNum);
     log.info("Custom request queue: " + reqQueue);
     boolean custReq = false;
@@ -166,7 +170,13 @@ public class MsgSendController {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         log.warn(sw.toString());
-        TimeUnit.SECONDS.sleep(10);
+        try {
+          TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException ie) {
+          StringWriter iesw = new StringWriter();
+          ie.printStackTrace(new PrintWriter(iesw));
+          log.warn(iesw.toString());
+        }
         if (custReq) {
           model.addAttribute("defaultActive", "");
           model.addAttribute("customActive", "active");

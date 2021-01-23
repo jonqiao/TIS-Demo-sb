@@ -3,9 +3,10 @@
 
 <head th:fragment="commonhead(title)">
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="description" content="TIS Demo">
+  <meta name="author" content="TIS - Jon">
   <meta name="generator" content="Jekyll v4.0.1">
   <title th:text="${title}"></title>
   <!-- Bootstrap core CSS -->
@@ -15,7 +16,7 @@
   <style>
     html,
     body {
-      padding-top: 4rem;
+      padding-top: 3rem;
       height: 100%;
       background-color: #333;
     }
@@ -83,11 +84,11 @@
           <a class="nav-link" href="/monitor">Monitor</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ActionCenter</a>
+          <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
           <div class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="/help">README</a>
+            <a class="dropdown-item" href="#">SWAGGER UI</a>
+            <a class="dropdown-item" href="#">ADMIN ONLY</a>
           </div>
         </li>
       </ul>

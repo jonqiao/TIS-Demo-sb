@@ -27,7 +27,7 @@ public class MQComp {
     defaultToken = MQEnvironment.addConnectionPoolToken();
   }
 
-  public MQQueueManager connectQmgr(MQProperties mqProperties) throws InterruptedException {
+  public MQQueueManager connectQmgr(MQProperties mqProperties) {
     MQQueueManager qMgr = null;
     try {
       qMgr = MQUtil.initQueueManager(mqProperties);
