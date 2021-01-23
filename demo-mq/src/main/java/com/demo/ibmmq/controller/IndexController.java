@@ -24,7 +24,7 @@ public class IndexController {
     return "index";
   }
 
-  // http://localhost:8080/
+  // http://localhost:8080/help
   @GetMapping("/help")
   public String help() {
     // List<String> lines = Files.readAllLines(Paths.get(defaultFile), StandardCharsets.UTF_8);

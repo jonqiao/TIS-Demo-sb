@@ -8,36 +8,19 @@
 
   <main role="main" class="container-fluid">
     <div class="bg-light text-dark">
-      <p id="mdcontent"></p>
-    </div>
-    <hr>
-    <div class="bg-secondary text-light" hidden>
-      <p id="sampletext">
-        # TIS-Demo-sb <br>
-        ## Reference link: <br>
-        - https://www.ibm.com/support/knowledgecenter/zh/SSFKSJ_9.1.0/com.ibm.mq.dev.doc/q031500_.htm <br>
-        - https://developer.ibm.com/languages/spring/tutorials/mq-jms-application-development-with-spring-boot/ <br>
-        - https://developer.ibm.com/zh/tutorials/mq-jms-application-development-with-spring-boot/ <br>
-        - https://github.com/ibm-messaging/mq-jms-spring <br>
-      </p>
+      <p id="mdContent"></p>
     </div>
   </main><!-- /.container -->
 
   <th:block th:replace="common/head :: commonjs"></th:block>
   <script src="/js/showdown.min.js"></script>
   <script type="text/javascript">
-    // $(document).ready(function () {
-    //   var content = $("#sampletext").text();
-    //   var converter = new showdown.Converter();
-    //   var htmlcontent = converter.makeHtml(content);
-    //   $("#mdcontent").html(htmlcontent);
-    // });
     $(document).ready(function () {
       $.get("/help/readme", function (result) {
         var converter = new showdown.Converter();
         converter.setOption('tables', true);
         var htmlcontent = converter.makeHtml(result);
-        $("#mdcontent").html(htmlcontent);
+        $("#mdContent").html(htmlcontent);
       });
       // $.ajax({
       //   type: "GET",
@@ -46,11 +29,10 @@
       //     var converter = new showdown.Converter();
       //     converter.setOption('tables', true);
       //     var htmlcontent = converter.makeHtml(result);
-      //     $("#mdcontent").html(htmlcontent);
+      //     $("#mdContent").html(htmlcontent);
       //   }
       // })
     })
-
   </script>
 </body>
 

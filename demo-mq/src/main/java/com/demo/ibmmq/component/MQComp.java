@@ -19,7 +19,6 @@ public class MQComp {
 
   private static final List<Integer> MQRC = Arrays.asList(2161, 2162, 2009, 2059, 2537, 2538);
   private static MQPoolToken defaultToken;
-  private MQQueueManager qMgr;
 
   @PostConstruct
   public void activateConn() {

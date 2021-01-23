@@ -7,7 +7,14 @@
 	<nav th:replace="common/head :: commonnav"></nav>
 
 	<main role="main" class="container-fluid">
-
+		<div class="card-deck">
+			<div class="card border-secondary">
+					<form id="form1" class="" role="form" method="POST" th:action="@{/monitor/all}">
+						<button id="refreshAllButton" class="btn btn-dark btn-lg btn-block" type="submit">Refresh All  <i class="fas fa-sync"></i></button>
+					</form>
+			</div>
+		</div>
+		<br>
 		<div class="card-deck">
 			<div class="card border-secondary">
 				<img src="/image/image10.jfif" class="card-img-top" alt="...">
@@ -16,7 +23,7 @@
 					CurrentDepth: <span class="card-text" th:text="${q1CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<form id="form1" class="" role="form" method="POST" th:action="@{/monitor/all}">
+					<form id="form1" class="" role="form" method="POST" th:action="@{/monitor/DEV.QUEUE.1}">
 						<div class="input-group mb-3">
 							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
 							<button id="refreshButton1" type="submit"><i class="fas fa-sync"></i></button>
@@ -31,7 +38,7 @@
 					CurrentDepth: <span class="card-text" th:text="${q2CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<form id="form2" class="" role="form" method="POST" th:action="@{/monitor/all}">
+					<form id="form2" class="" role="form" method="POST" th:action="@{/monitor/DEV.QUEUE.2}">
 						<div class="input-group mb-3">
 							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
 							<button id="refreshButton2" type="submit"><i class="fas fa-sync"></i></button>
@@ -46,7 +53,7 @@
 					CurrentDepth: <span class="card-text" th:text="${q3CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<form id="form3" class="" role="form" method="POST" th:action="@{/monitor/all}">
+					<form id="form3" class="" role="form" method="POST" th:action="@{/monitor/DEV.QUEUE.3}">
 						<div class="input-group mb-3">
 							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
 							<button id="refreshButton3" type="submit"><i class="fas fa-sync"></i></button>
@@ -55,9 +62,18 @@
 				</div>
 			</div>
 		</div>
+
+		<span id="monitorToken" th:text="${monitorToken}" hidden></span>
 	</main><!-- /.container -->
 
 	<th:block th:replace="common/head :: commonjs"></th:block>
+	<script type="text/javascript">
+    $(document).ready(function () {
+			if ($("#monitorToken").text() == "") {
+				$("#refreshAllButton").click();
+			}
+    })
+  </script>
 </body>
 
 </html>
