@@ -22,7 +22,7 @@ public class MsgSendController {
   private String defaultDest;
 
   @Value("${demo.queue.local3}") // DEV.QUEUE.3
-  private String inQueue;
+  private String localQ3;
 
   @Value("${demo.file.default}")
   private String defaultFile;
@@ -62,7 +62,7 @@ public class MsgSendController {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         while(reader.ready()) {
           String line = reader.readLine();
-          jmsTemplate.convertAndSend(inQueue, line);
+          jmsTemplate.convertAndSend(localQ3, line);
         }
         model.addAttribute("message2", "Success: send msg to MQ with " + file.getOriginalFilename() + "!");
       } catch (Exception e) {

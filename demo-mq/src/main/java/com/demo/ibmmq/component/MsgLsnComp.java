@@ -1,9 +1,7 @@
 package com.demo.ibmmq.component;
 
-import com.ibm.mq.MQMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +12,7 @@ import java.util.Date;
 public class MsgLsnComp {
 
   @Value("${spring.jms.template.default-destination}") // DEV.QUEUE.1
-  String defaultDest;
-
+  private String defaultDest;
   @Value("${demo.queue.local2}") // DEV.QUEUE.2
   private String localQ2;
   @Value("${demo.queue.local3}") // DEV.QUEUE.3

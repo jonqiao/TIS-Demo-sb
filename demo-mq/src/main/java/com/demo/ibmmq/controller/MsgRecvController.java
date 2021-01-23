@@ -1,6 +1,5 @@
 package com.demo.ibmmq.controller;
 
-import com.ibm.msg.client.jms.JmsQueue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,9 +7,10 @@ import org.springframework.jms.JmsException;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.jms.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -28,7 +28,7 @@ public class MsgRecvController {
   private CachingConnectionFactory cachingConnectionFactory;
 
   @Value("${demo.queue.local2}") // DEV.QUEUE.2
-  private String outQueue;
+  private String localQ2;
 
   @Value("${demo.file.output}")
   private String outputFile;
@@ -42,8 +42,8 @@ public class MsgRecvController {
   public String recvDefault(){
     // jmsTemplate.setReceiveTimeout(JmsTemplate.RECEIVE_TIMEOUT_NO_WAIT);
     try{
-      String msg = "Receive from " + outQueue + " at " + new Date();
-      String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(outQueue)).map(obj -> obj.toString()).orElse("No msg...");
+      String msg = "Receive from " + localQ2 + " at " + new Date();
+      String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(localQ2)).map(obj -> obj.toString()).orElse("No msg...");
       log.info(msg + " ==|======> " + resp);
       return msg + " ==|======> " + resp;
     }catch(JmsException e){
@@ -59,8 +59,8 @@ public class MsgRecvController {
   @ResponseBody
   public String recvSaveDefault() {
     try{
-      String msg = "Save from " + outQueue + " at " + new Date();
-      String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(outQueue)).map(obj -> obj.toString()).orElse("No msg...");
+      String msg = "Save from " + localQ2 + " at " + new Date();
+      String resp = Optional.ofNullable(jmsTemplate.receiveAndConvert(localQ2)).map(obj -> obj.toString()).orElse("No msg...");
       Files.write(Paths.get(outputFile), resp.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
       Files.write(Paths.get(outputFile), System.getProperty("line.separator").getBytes(), StandardOpenOption.APPEND);
       return msg + " ==|======> " + resp;
