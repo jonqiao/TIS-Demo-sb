@@ -21,9 +21,6 @@ public class MsgSendController {
   @Value("${spring.jms.template.default-destination}") // DEV.QUEUE.1
   private String defaultDest;
 
-  @Value("${demo.queue.local3}") // DEV.QUEUE.3
-  private String localQ3;
-
   @Value("${demo.file.default}")
   private String defaultFile;
 
@@ -62,7 +59,7 @@ public class MsgSendController {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         while(reader.ready()) {
           String line = reader.readLine();
-          jmsTemplate.convertAndSend(localQ3, line);
+          jmsTemplate.convertAndSend(defaultDest, line);
         }
         model.addAttribute("message2", "Success: send msg to MQ with " + file.getOriginalFilename() + "!");
       } catch (Exception e) {

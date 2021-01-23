@@ -2,6 +2,7 @@ package com.demo.ibmmq.controller;
 
 import com.demo.ibmmq.bean.MQProperties;
 import com.demo.ibmmq.component.MQComp;
+import com.ibm.mq.MQException;
 import com.ibm.mq.MQQueueManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,13 +69,13 @@ public class MonitorController {
         model.addAttribute("q2CurDepth", "unknown qMgr connection");
         model.addAttribute("q3CurDepth", "unknown qMgr connection");
       }
-    } catch (Exception e) {
+    } catch (MQException e) {
       StringWriter sw = new StringWriter();
       e.printStackTrace(new PrintWriter(sw));
       log.warn(sw.toString());
-      model.addAttribute("q1CurDepth", "Found Exception");
-      model.addAttribute("q2CurDepth", "Found Exception");
-      model.addAttribute("q3CurDepth", "Found Exception");
+      model.addAttribute("q1CurDepth", "Found MQException");
+      model.addAttribute("q2CurDepth", "Found MQException");
+      model.addAttribute("q3CurDepth", "Found MQException");
     }
     long end = System.currentTimeMillis();
     log.info("Monitor end: " + end);
