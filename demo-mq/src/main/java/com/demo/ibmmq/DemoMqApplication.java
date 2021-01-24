@@ -5,15 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.annotation.EnableJms;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @EnableJms
 @SpringBootApplication
@@ -21,13 +15,14 @@ public class DemoMqApplication {
 
 	public static void main(String[] args) throws IOException {
 
-		// Path amqclchlFilePath = Paths.get("./AMQCLCHL.TAB");
+		// Files.createDirectories(Paths.get("./logs/"));
+		// Path amqclchlFilePath = Paths.get("./logs/AMQCLCHL.TAB");
 		// Files.deleteIfExists(amqclchlFilePath);
 		// try (InputStream stream = new ClassPathResource("/AMQCLCHL.TAB").getInputStream()) {
 		// 	Files.copy(stream, amqclchlFilePath, StandardCopyOption.REPLACE_EXISTING);
 		// }
 		//
-		// Path trustStoreFilePath = Paths.get("./truststore.jks");
+		// Path trustStoreFilePath = Paths.get("./logs/truststore.jks");
 		// Files.deleteIfExists(trustStoreFilePath);
 		// try (InputStream stream = new ClassPathResource("/truststore.jks").getInputStream()) {
 		// 	Files.copy(stream, trustStoreFilePath, StandardCopyOption.REPLACE_EXISTING);

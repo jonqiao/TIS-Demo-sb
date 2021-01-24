@@ -31,9 +31,8 @@ ibm:
     channel: DEV.ADMIN.SVRCONN
     connName: localhost(1414)
     # ccdtUrl: file:///D:\\WORKSPACE\\FIL_WORKSPACE\\ibmmq\\AMQCLCHL.TAB
-    # sslCipherSpec: TLS_RSA_WITH_AES_256_CBC_SHA256
 #    sslCipherSuite: TLS_RSA_WITH_AES_256_CBC_SHA256
-    useIBMCipherMappings: false
+#    useIBMCipherMappings: false
     # additional-properties:
 
 demo:
@@ -53,9 +52,9 @@ demo:
     local3: DEV.QUEUE.3
   file:
     default: archive/msg.in
-    output: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\msg.out
+    output: logs/msg.out
   storage:
-    location: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\upload
+    location: logs/upload
 logging:
   file:
-    name: D:\\WORKSPACE\\FIL-WORKSPACE\\logs\\DemoMQ.log
+    name: logs/DemoMQ.log
