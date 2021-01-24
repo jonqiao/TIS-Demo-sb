@@ -9,9 +9,14 @@
 	<main role="main" class="container-fluid">
 		<div class="card-deck">
 			<div class="card border-secondary">
-					<form id="formAll" class="" role="form" method="POST" th:action="@{/monitor/all}">
-						<button id="refreshAllButton" class="btn btn-dark btn-lg btn-block" type="submit">Refresh All  <i class="fas fa-sync"></i></button>
-					</form>
+				<form id="formAll" class="" role="form">
+					<button id="refreshBtnAll" class="btn btn-dark btn-lg btn-block" type="button" onclick="refresh('all')">Refresh All&nbsp;&nbsp;
+						<i id="faSyncAll" class="fas fa-sync"></i>
+						<div id="loadingAll" class="spinner-border text-light" role="status" style="display: none;">
+							<span class="sr-only">Loading...</span>
+						</div>
+					</button>
+				</form>
 			</div>
 		</div>
 		<br>
@@ -23,10 +28,15 @@
 					CurrentDepth: <span class="card-text" th:text="${q1CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<form id="form1" class="" role="form" method="POST" th:action="@{/monitor/DEV.QUEUE.1}">
-						<div class="input-group mb-3">
+					<form id="form1" class="" role="form">
+						<div class="input-group">
 							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
-							<button id="refreshButton1" type="submit"><i class="fas fa-sync"></i></button>
+							<button id="refreshBtn1" type="button" onclick="refresh('DEV.QUEUE.1')">
+								<i id="faSync1" class="fas fa-sync"></i>
+								<div id="loading1" class="spinner-border text-light" role="status" style="display: none;">
+									<span class="sr-only">Loading...</span>
+								</div>
+							</button>
 						</div>
 					</form>
 				</div>
@@ -38,10 +48,15 @@
 					CurrentDepth: <span class="card-text" th:text="${q2CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<form id="form2" class="" role="form" method="POST" th:action="@{/monitor/DEV.QUEUE.2}">
-						<div class="input-group mb-3">
+					<form id="form2" class="" role="form">
+						<div class="input-group">
 							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
-							<button id="refreshButton2" type="submit"><i class="fas fa-sync"></i></button>
+							<button id="refreshBtn2" type="button" onclick="refresh('DEV.QUEUE.2')">
+								<i id="faSync2" class="fas fa-sync"></i>
+								<div id="loading2" class="spinner-border text-light" role="status" style="display: none;">
+									<span class="sr-only">Loading...</span>
+								</div>
+							</button>
 						</div>
 					</form>
 				</div>
@@ -53,27 +68,55 @@
 					CurrentDepth: <span class="card-text" th:text="${q3CurDepth}"></span>
 				</div>
 				<div class="card-footer">
-					<form id="form3" class="" role="form" method="POST" th:action="@{/monitor/DEV.QUEUE.3}">
-						<div class="input-group mb-3">
+					<form id="form3" class="" role="form">
+						<div class="input-group">
 							<small class="form-control text-muted" type="text">Last updated 1 mins ago</small>
-							<button id="refreshButton3" type="submit"><i class="fas fa-sync"></i></button>
+							<button id="refreshBtn3" type="button" onclick="refresh('DEV.QUEUE.3')">
+								<i id="faSync3" class="fas fa-sync"></i>
+								<div id="loading3" class="spinner-border text-light" role="status" style="display: none;">
+									<span class="sr-only">Loading...</span>
+								</div>
+							</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-
-		<span id="monitorToken" th:text="${monitorToken}" hidden></span>
 	</main><!-- /.container -->
 
 	<th:block th:replace="common/head :: commonjs"></th:block>
 	<script type="text/javascript">
-    $(document).ready(function () {
-			if ($("#monitorToken").text() == "") {
-				$("#refreshAllButton").click();
+		function refresh(val) {
+			let temp = "";
+			if("all" == val) {
+				temp = "All";
+			} else {
+				temp = val.split('.')[2];
 			}
-    })
-  </script>
+			$("refreshBtn" + temp).attr("disabled", true);
+			$("faSync" + temp).hide();
+			$("loading" + temp).show();
+
+			$.get("/monitor/" + val, function(data){
+				for(let key in data) {
+					$("#" + key).html(data[key]);
+				}
+				$("loading" + temp).hide();
+				$("faSync" + temp).show();				
+				$("refreshBtn" + temp).removeAttr("disabled");
+			})
+		}
+
+		$(document).ready(function () {
+			$("#refreshBtnAll").click();
+		})
+
+		// $(document).ready(function () {
+		// 	if ($("#monitorToken").text() == "") {
+		// 		$("#refreshAllButton").click();
+		// 	}
+		// })
+	</script>
 </body>
 
 </html>

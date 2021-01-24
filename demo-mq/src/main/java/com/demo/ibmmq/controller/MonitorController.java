@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -40,56 +40,59 @@ public class MonitorController {
     return "monitor";
   }
 
-  @PostMapping("/monitor/all")
-  public String monitorAll(Model model) {
+  @GetMapping("/monitor/all")
+  @ResponseBody
+  public Map monitorAll() {
     long start = System.currentTimeMillis();
     log.info("Monitor All start: " + start);
+    Map map = new HashMap<>();
     try {
       MQQueueManager qMgr = new MQComp().connectQmgr(mqProperties);
       if (qMgr != null) {
         Integer q1CurDepth = MQComp.chkQueueDepth(qMgr, localQ1);
         if (q1CurDepth != null) {
-          model.addAttribute("q1CurDepth", q1CurDepth);
+          map.put("q1CurDepth", q1CurDepth);
         } else {
-          model.addAttribute("q1CurDepth", "unknown queue connection");
+          map.put("q1CurDepth", "unknown queue connection");
         }
         Integer q2CurDepth = MQComp.chkQueueDepth(qMgr, localQ2);
         if (q2CurDepth != null) {
-          model.addAttribute("q2CurDepth", q2CurDepth);
+          map.put("q2CurDepth", q2CurDepth);
         } else {
-          model.addAttribute("q2CurDepth", "unknown queue connection");
+          map.put("q2CurDepth", "unknown queue connection");
         }
         Integer q3CurDepth = MQComp.chkQueueDepth(qMgr, localQ3);
         if (q3CurDepth != null) {
-          model.addAttribute("q3CurDepth", q3CurDepth);
+          map.put("q3CurDepth", q3CurDepth);
         } else {
-          model.addAttribute("q3CurDepth", "unknown queue connection");
+          map.put("q3CurDepth", "unknown queue connection");
         }
         qMgr.disconnect();
       } else {
-        model.addAttribute("q1CurDepth", "unknown qMgr connection");
-        model.addAttribute("q2CurDepth", "unknown qMgr connection");
-        model.addAttribute("q3CurDepth", "unknown qMgr connection");
+        map.put("q1CurDepth", "unknown qMgr connection");
+        map.put("q2CurDepth", "unknown qMgr connection");
+        map.put("q3CurDepth", "unknown qMgr connection");
       }
     } catch (MQException e) {
       StringWriter sw = new StringWriter();
       e.printStackTrace(new PrintWriter(sw));
       log.warn(sw.toString());
-      model.addAttribute("q1CurDepth", "Found MQException");
-      model.addAttribute("q2CurDepth", "Found MQException");
-      model.addAttribute("q3CurDepth", "Found MQException");
+      map.put("q1CurDepth", "Found MQException");
+      map.put("q2CurDepth", "Found MQException");
+      map.put("q3CurDepth", "Found MQException");
     }
     long end = System.currentTimeMillis();
     log.info("Monitor All end: " + end);
     log.info("Monitor All take: " + (end - start) + " for one time...");
-    model.addAttribute("monitorToken", UUID.randomUUID().toString());
-    return "monitor";
+    return map;
   }
 
-  @PostMapping("/monitor/{queuename}")
-  public String monitorQueuename(@PathVariable String queuename, Model model) {
+  @GetMapping("/monitor/{queuename}")
+  @ResponseBody
+  public Map monitueue(@PathVariable String queuename) {
     long start = System.currentTimeMillis();
     log.info("Monitor " + queuename + " start: " + start);
+    Map map = new HashMap<>();
     String curDepth;
     switch (queuename) {
       case "DEV.QUEUE.1":
@@ -110,25 +113,24 @@ public class MonitorController {
       if (qMgr != null) {
         Integer q1CurDepth = MQComp.chkQueueDepth(qMgr, queuename);
         if (q1CurDepth != null) {
-          model.addAttribute(curDepth, q1CurDepth);
+          map.put(curDepth, q1CurDepth);
         } else {
-          model.addAttribute(curDepth, "unknown queue connection");
+          map.put(curDepth, "unknown queue connection");
         }
         qMgr.disconnect();
       } else {
-        model.addAttribute(curDepth, "unknown qMgr connection");
+        map.put(curDepth, "unknown qMgr connection");
       }
     } catch (MQException e) {
       StringWriter sw = new StringWriter();
       e.printStackTrace(new PrintWriter(sw));
       log.warn(sw.toString());
-      model.addAttribute(curDepth, "Found MQException");
+      map.put(curDepth, "Found MQException");
     }
     long end = System.currentTimeMillis();
     log.info("Monitor " + queuename + " end: " + end);
     log.info("Monitor " + queuename + " take: " + (end - start) + " for one time...");
-    model.addAttribute("monitorToken", UUID.randomUUID().toString());
-    return "monitor";
+    return map;
   }
 
 }

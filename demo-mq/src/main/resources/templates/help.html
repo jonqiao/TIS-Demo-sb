@@ -16,19 +16,19 @@
   <script src="/js/showdown.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
-      $.get("/help/readme", function (result) {
+      $.get("/help/readme", function (data) {
         var converter = new showdown.Converter();
         converter.setOption('tables', true);
-        var htmlcontent = converter.makeHtml(result);
+        var htmlcontent = converter.makeHtml(data);
         $("#mdContent").html(htmlcontent);
       });
       // $.ajax({
       //   type: "GET",
       //   url: "/help/readme",
-      //   success: function (result) {
+      //   success: function (data) {
       //     var converter = new showdown.Converter();
       //     converter.setOption('tables', true);
-      //     var htmlcontent = converter.makeHtml(result);
+      //     var htmlcontent = converter.makeHtml(data);
       //     $("#mdContent").html(htmlcontent);
       //   }
       // })
