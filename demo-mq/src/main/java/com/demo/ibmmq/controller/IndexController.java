@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.*;
@@ -26,21 +28,24 @@ public class IndexController {
 
   // http://localhost:8080/help
   @GetMapping("/help")
-  public String help() {
-    // List<String> lines = Files.readAllLines(Paths.get(defaultFile), StandardCharsets.UTF_8);
-    // for (String line : lines) {
-    //   log.info(line);
-    // }
+  public String help(@RequestParam String name) {
+    log.info("Request URL: /help?name=" + name);
     return "help";
   }
 
   // http://localhost:8080/help/readme
-  @GetMapping("/help/readme")
+  @GetMapping("/help/{name}")
   @ResponseBody
-  public String readme() {
+  public String readme(@PathVariable String name) {
+    // String fileContent = new String(Files.readAllBytes(Paths.get("classpath:static/markdown/README.md")));
     ClassPathResource classPathResource = new ClassPathResource("static/markdown/README.md");
+    if ("readme".equalsIgnoreCase(name)) {
+      // classPathResource = new ClassPathResource("static/markdown/README.md");
+    }
+    if ("admin".equalsIgnoreCase(name)) {
+      classPathResource = new ClassPathResource("static/markdown/EnvSetUp.md");
+    }
     try {
-      // String fileContent = new String(Files.readAllBytes(Paths.get("classpath:static/markdown/README.md")));
       log.info("Send file: " + classPathResource.getFilename());
       InputStream is = classPathResource.getInputStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(is));
