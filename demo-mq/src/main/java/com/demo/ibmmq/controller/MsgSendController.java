@@ -11,7 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Date;
 
 @Slf4j
@@ -30,7 +34,14 @@ public class MsgSendController {
 
   // http://localhost:8080/upload
   @GetMapping("/mqupload")
-  public String fileUpload() {
+  public String fileUpload(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    String username = (String) session.getAttribute("username");
+    System.out.println("session.username is " + username);
+    Cookie[] cookies = request.getCookies();
+    // Arrays.stream(cookies).forEach(cookie -> System.out.println("Cookies: " + cookie.getName() + "=" + cookie.getValue()));
+    String JSESSIONID = Arrays.stream(cookies).filter(cookie -> "JSESSIONID".equalsIgnoreCase(cookie.getName())).map(cookie -> cookie.getValue()).findFirst().orElse(null);
+    System.out.println("cookies.JSESSIONID is " + JSESSIONID);
     return "uploadForm";
   }
 

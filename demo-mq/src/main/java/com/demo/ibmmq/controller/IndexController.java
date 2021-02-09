@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.stream.Collectors;
 
@@ -18,11 +20,14 @@ public class IndexController {
 
   // http://localhost:8080/
   @GetMapping
-  public String index() {
+  public String index(HttpServletRequest request) {
     // List<String> lines = Files.readAllLines(Paths.get(defaultFile), StandardCharsets.UTF_8);
     // for (String line : lines) {
     //   log.info(line);
     // }
+    HttpSession session = request.getSession();
+    session.setAttribute("username", "Jon");
+    System.out.println("Get SessionID: " + session.getId());
     return "index";
   }
 
